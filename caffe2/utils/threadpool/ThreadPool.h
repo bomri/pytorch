@@ -36,6 +36,7 @@ class CAFFE2_API /*alignas(kCacheLineSize)*/ ThreadPool {
   ~ThreadPool();
   // Returns the number of threads currently in use
   int getNumThreads() const;
+  void setNumThreads(size_t numThreads);
 
   // Sets the minimum work size (range) for which to invoke the
   // threadpool; work sizes smaller than this will just be run on the
@@ -49,7 +50,8 @@ class CAFFE2_API /*alignas(kCacheLineSize)*/ ThreadPool {
   void withPool(const std::function<void(WorkersPool*)>& fn);
 
  private:
-  mutable std::mutex executionMutex_;
+  std::mutex executionMutex_;
+  //std::mutex numThreadsMutex_;
   size_t minWorkSize_;
   size_t numThreads_;
   std::shared_ptr<WorkersPool> workersPool_;
